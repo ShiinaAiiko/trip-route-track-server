@@ -1,0 +1,36 @@
+package routerV1
+
+import (
+	controllersV1 "github.com/ShiinaAiiko/nyanya-trip-route-track/server/controllers/v1"
+	"github.com/ShiinaAiiko/nyanya-trip-route-track/server/services/middleware"
+)
+
+func (r *Routerv1) InitAi() {
+	c := new(controllersV1.AIController)
+
+	role := middleware.RoleMiddlewareOptions{
+		BaseUrl: r.BaseUrl,
+	}
+
+	r.Group.POST(
+		role.SetRole("/ai/roadbook", &middleware.RoleOptionsType{
+			CheckApp:           false,
+			Authorize:          true,
+			RequestEncryption:  false,
+			ResponseEncryption: false,
+			RequestDataType:    "protobuf",
+			ResponseDataType:   "protobuf",
+		}),
+		c.AiRoadbook)
+
+	r.Group.POST(
+		role.SetRole("/ai/coDriver", &middleware.RoleOptionsType{
+			CheckApp:           false,
+			Authorize:          true,
+			RequestEncryption:  false,
+			ResponseEncryption: false,
+			RequestDataType:    "protobuf",
+			ResponseDataType:   "protobuf",
+		}),
+		c.AICoDriver)
+}
